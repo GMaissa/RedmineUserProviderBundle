@@ -1,0 +1,27 @@
+parameters:
+    redmine_user_provider.api.client.class: GMaissa\RedmineUserProviderBundle\ApiClient\Adapter\RedmineClientAdapter
+    redmine_user_provider.factory.user.class: GMaissa\RedmineUserProviderBundle\Factory\UserFactory
+    redmine_user_provider.provider.class: GMaissa\RedmineUserProviderBundle\Security\Provider\RedmineUserProvider
+    redmine_user_provider.api_client_class: Redmine\Client
+
+services:
+    redmine_user_provider.api.client.default:
+        class: "%redmine_user_provider.api_client.class%"
+        arguments:
+            - "%redmine_user_provider.redmine.url%"
+        calls:
+            - [setClientClass, ["%redmine_user_provider.api_client_class%"]]
+
+    redmine_user_provider.factory.user.default:
+        class: "%redmine_user_provider.factory.user.class%"
+        calls:
+            - [setUserClass, ["%redmine_user_provider.user_class%"]]
+
+    redmine_user_provider.provider:
+        class: "%redmine_user_provider.provider.class%"
+        arguments:
+            - "%redmine_user_provider.redmine.allowed_domains%"
+            - "@logger"
+        calls:
+            - [setUserFactory, ["@redmine_user_provider.factory.user"]]
+            - [setApiClient, ["@redmine_user_provider.api.client"]]

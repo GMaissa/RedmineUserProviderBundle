@@ -1,0 +1,6 @@
+metadata:
+    auto_detection: true
+    directories:
+        Domain:
+            namespace_prefix: "VmDashboard\\Infrastructure\\UserBundle"
+            path: "src/VmDashboard/Infrastructure/UserBundle/Resources/config/serializer"
