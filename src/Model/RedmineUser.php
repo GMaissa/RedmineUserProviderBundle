@@ -53,7 +53,7 @@ class RedmineUser implements UserInterface
     protected $password;
 
     /**
-     * @var ArrayCollection
+     * @var array
      */
     protected $roles;
 
@@ -74,7 +74,6 @@ class RedmineUser implements UserInterface
      */
     public function __construct($properties = array())
     {
-        $this->roles = new ArrayCollection();
         foreach ($properties as $key => $value) {
             $this->$key = $value;
         }
@@ -87,12 +86,11 @@ class RedmineUser implements UserInterface
     {
         $roles = $this->roles;
 
-        if ($roles->count() == 0) {
-            $roles = new ArrayCollection();
-            $roles->add(self::ROLE_DEFAULT);
+        if (count($roles) == 0) {
+            $roles[] = self::ROLE_DEFAULT;
         }
 
-        return $roles->toArray();
+        return $roles;
     }
 
     /**
