@@ -11,8 +11,6 @@
 
 namespace GMaissa\RedmineUserProviderBundle;
 
-use GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler\ApiClientCompilerPass;
-use GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler\UserFactoryCompilerPass;
 use GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler\UserProviderCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

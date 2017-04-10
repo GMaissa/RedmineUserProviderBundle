@@ -4,7 +4,7 @@
     "description": "A bundle to use Redmine as a user provider.",
     "keywords": ["security", "user provider"],
     "homepage": "https://github.com/GMaissa/RedmineUserProviderBundle",
-    "license": "OSL 3.0",
+    "license": "OSL-3.0",
     "authors": [
         {
             "name": "Guillaume Maïssa",
