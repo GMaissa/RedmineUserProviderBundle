@@ -1,5 +1,10 @@
 # RedmineUserProviderBundle
 
+ master | [![SensioLabsInsight](https://insight.sensiolabs.com/projects/443c6ca0-a4ba-4add-a1e6-41dd63a1f14e/mini.png)](https://insight.sensiolabs.com/projects/443c6ca0-a4ba-4add-a1e6-41dd63a1f14e) | [![Scrutinizer](https://img.shields.io/scrutinizer/g/GMaissa/RedmineUserProviderBundle/master.svg)](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/?branch=master) | [![Build Status](https://travis-ci.org/GMaissa/RedmineUserProviderBundle.svg?branch=master)](https://travis-ci.org/GMaissa/RedmineUserProviderBundle) | [![Code Coverage](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/?branch=master)
+--------|---------|-------------|--------|----------
+
+## About
+
 A bundle to use Redmine as a user provider.
 
 ## Installation
