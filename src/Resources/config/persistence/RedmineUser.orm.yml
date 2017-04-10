@@ -1,0 +1,33 @@
+GMaissa\RedmineUserProviderBundle\Model\RedmineUser:
+    type: mappedSuperclass
+    table: user
+    repositoryClass: GMaissa\RedmineUserProviderBundle\Repository\DoctrineUserRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        username:
+            column: username
+            type: string
+            length: 180
+        email:
+            column: email
+            type: string
+            length: 180
+        enabled:
+            column: enabled
+            type: boolean
+        password:
+            column: password
+            type: string
+        roles:
+            column: roles
+            type: array
+        firstname:
+            type: string
+            length: 255
+        lastname:
+            type: string
+            length: 255

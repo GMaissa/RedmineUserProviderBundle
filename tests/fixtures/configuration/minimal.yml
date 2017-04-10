@@ -1,0 +1,5 @@
+gm_redmine_user_provider:
+    redmine:
+        url: redmine.test.com
+        allowed_domains:
+            - test.com

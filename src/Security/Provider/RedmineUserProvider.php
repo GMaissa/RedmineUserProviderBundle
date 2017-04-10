@@ -13,6 +13,7 @@ namespace GMaissa\RedmineUserProviderBundle\Security\Provider;
 
 use GMaissa\RedmineUserProviderBundle\ApiClient\RedmineApiClientInterface;
 use GMaissa\RedmineUserProviderBundle\Factory\UserFactoryInterface;
+use GMaissa\RedmineUserProviderBundle\Model\RedmineUser;
 use GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 /**
  * Redmine User provider class
  */
-class RedmineProvider implements UserProviderInterface, CredentialsUserProviderInterface
+class RedmineUserProvider implements UserProviderInterface, CredentialsUserProviderInterface
 {
     /**
      * @var UserFactoryInterface
@@ -102,14 +103,19 @@ class RedmineProvider implements UserProviderInterface, CredentialsUserProviderI
             $data = $this->apiClient->api('user')->getCurrentUser();
 
             if (!$data || !count($data)) {
-                $this->logger->debug(sprintf('Invalid credential %s / ****', $username));
+                $this->logger->debug(sprintf('Invalid credentials %s / ****', $username));
                 throw new AuthenticationException('Invalid credentials');
             }
 
             $this->checkUserDomain($data);
 
             $user = $this->getUser($data);
+        } catch (AuthenticationException $e) {
+            throw new AuthenticationException($e);
         } catch (\Exception $e) {
+            $this->logger->debug(
+                sprintf('Invalid credentials')
+            );
             throw new AuthenticationException('Invalid credentials');
         }
 
@@ -143,7 +149,10 @@ class RedmineProvider implements UserProviderInterface, CredentialsUserProviderI
     {
         $obj = new \ReflectionClass($class);
 
-        return $obj->implementsInterface($this->userFactory->getUserClass());
+        return (
+            $obj->getName() == $this->userFactory->getUserClass() ||
+            $obj->isSubclassOf($this->userFactory->getUserClass())
+        );
     }
 
     /**
@@ -174,9 +183,9 @@ class RedmineProvider implements UserProviderInterface, CredentialsUserProviderI
      *
      * @param array $data
      *
-     * @return UserInterface
+     * @return RedmineUser
      */
-    private function getUser(array $data): UserInterface
+    private function getUser(array $data): RedmineUser
     {
         $user = null;
         $userData = [

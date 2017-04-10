@@ -24,16 +24,18 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $defaultUserClass = "\\GMaissa\\RedmineUserProviderBundle\\Model\\User";
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('redmine_user_provider');
+        $defaultUserClass = "\\GMaissa\\RedmineUserProviderBundle\\Model\\RedmineUser";
+        $treeBuilder      = new TreeBuilder();
+        $rootNode         = $treeBuilder->root('gm_redmine_user_provider');
 
         $rootNode
             ->children()
                 ->arrayNode('redmine')
                     ->children()
                         ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
-                        ->arrayNode('allowed_domains')->end()
+                        ->arrayNode('allowed_domains')
+                            ->prototype('scalar')->end()
+                        ->end()
                     ->end()
                 ->end()
                 ->scalarNode('user_class')->defaultValue($defaultUserClass)->cannotBeEmpty()->end()

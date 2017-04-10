@@ -1,27 +1,35 @@
 parameters:
-    redmine_user_provider.api.client.class: GMaissa\RedmineUserProviderBundle\ApiClient\Adapter\RedmineClientAdapter
-    redmine_user_provider.factory.user.class: GMaissa\RedmineUserProviderBundle\Factory\UserFactory
+    redmine_user_provider.api.client.default.class: GMaissa\RedmineUserProviderBundle\ApiClient\Adapter\RedmineClientAdapter
+    redmine_user_provider.factory.user.default.class: GMaissa\RedmineUserProviderBundle\Factory\UserFactory
     redmine_user_provider.provider.class: GMaissa\RedmineUserProviderBundle\Security\Provider\RedmineUserProvider
     redmine_user_provider.api_client_class: Redmine\Client
+    redmine_user_provider.repository.user.db.class: GMaissa\RedmineUserProviderBundle\Repository\DoctrineUserRepository
 
 services:
     redmine_user_provider.api.client.default:
-        class: "%redmine_user_provider.api_client.class%"
+        class: "%redmine_user_provider.api.client.default.class%"
         arguments:
-            - "%redmine_user_provider.redmine.url%"
+            - "%gm_redmine_user_provider.redmine.url%"
         calls:
             - [setClientClass, ["%redmine_user_provider.api_client_class%"]]
 
     redmine_user_provider.factory.user.default:
-        class: "%redmine_user_provider.factory.user.class%"
+        class: "%redmine_user_provider.factory.user.default.class%"
         calls:
-            - [setUserClass, ["%redmine_user_provider.user_class%"]]
+            - [setUserClass, ["%gm_redmine_user_provider.user_class%"]]
 
     redmine_user_provider.provider:
         class: "%redmine_user_provider.provider.class%"
         arguments:
-            - "%redmine_user_provider.redmine.allowed_domains%"
+            - "%gm_redmine_user_provider.redmine.allowed_domains%"
             - "@logger"
         calls:
             - [setUserFactory, ["@redmine_user_provider.factory.user"]]
             - [setApiClient, ["@redmine_user_provider.api.client"]]
+
+    redmine_user_provider.repository.user.db:
+        class: "%redmine_user_provider.repository.user.db.class%"
+        public: false
+        factory: ["@doctrine.orm.entity_manager", "getRepository"]
+        arguments:
+            - "%gm_redmine_user_provider.user_class%"

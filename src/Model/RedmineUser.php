@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class User
  */
-class User implements UserInterface
+class RedmineUser implements UserInterface
 {
     const ROLE_DEFAULT     = 'ROLE_USER';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
@@ -74,6 +74,7 @@ class User implements UserInterface
      */
     public function __construct($properties = array())
     {
+        $this->roles = new ArrayCollection();
         foreach ($properties as $key => $value) {
             $this->$key = $value;
         }
@@ -86,7 +87,12 @@ class User implements UserInterface
     {
         $roles = $this->roles;
 
-        return $roles;
+        if ($roles->count() == 0) {
+            $roles = new ArrayCollection();
+            $roles->add(self::ROLE_DEFAULT);
+        }
+
+        return $roles->toArray();
     }
 
     /**

@@ -13,6 +13,7 @@ namespace GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * User provider compiler pass
@@ -26,29 +27,41 @@ class UserProviderCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasParameter('redmine_user_provider.user_repository_service')) {
-            $userRepositoryServiceId = $container->getParameter('redmine_user_provider.user_repository_service');
-            $repositoryDefinition    = $container->getDefinition($userRepositoryServiceId);
-            $className               = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
-            $reflection              = new \ReflectionClass($className);
-            if (!$reflection->implementsInterface(
-                'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
-            )
-            ) {
+        $defaultDependencies = [
+            [
+                'serviceId'        => 'redmine_user_provider.api.client',
+                'defaultServiceId' => 'redmine_user_provider.api.client.default'
+            ],
+            [
+                'serviceId'        => 'redmine_user_provider.factory.user',
+                'defaultServiceId' => 'redmine_user_provider.factory.user.default'
+            ]
+        ];
+        foreach ($defaultDependencies as $dependency) {
+            if (!$container->has($dependency['serviceId'])) {
+                $container->setAlias($dependency['serviceId'], $dependency['defaultServiceId']);
+            }
+        }
+
+        if ($container->hasParameter('gm_redmine_user_provider.user_repository_service')) {
+            $serviceId            = $container->getParameter('gm_redmine_user_provider.user_repository_service');
+            $repositoryDefinition = $container->getDefinition($serviceId);
+            $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
+            $reflection           = new \ReflectionClass($className);
+            $repositoryInterface  = 'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface';
+            if (!$reflection->implementsInterface($repositoryInterface)) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The user repository %s should implement interface "%s"',
-                        $userRepositoryServiceId,
+                        $serviceId,
                         'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
                     )
                 );
             }
 
-            $providerDefinition = $container->getDefinition('redmine_user_provider.provider');
-            $providerDefinition->addMethodCall(
-                'setUserRepository',
-                [$container->get($userRepositoryServiceId)]
-            );
+            $definition = $container->getDefinition('redmine_user_provider.provider');
+            $definition->addMethodCall('setUserRepository', array(new Reference($serviceId)));
+            $container->getParameterBag()->remove('gm_redmine_user_provider.user_repository_service');
         }
     }
 }

@@ -13,6 +13,7 @@ namespace GMaissa\RedmineUserProviderBundle;
 
 use GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler\ApiClientCompilerPass;
 use GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler\UserFactoryCompilerPass;
+use GMaissa\RedmineUserProviderBundle\DependencyInjection\Compiler\UserProviderCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -27,7 +28,7 @@ class GmRedmineUserProviderBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        $container->addCompilerPass(new UserFactoryCompilerPass());
-        $container->addCompilerPass(new ApiClientCompilerPass());
+
+        $container->addCompilerPass(new UserProviderCompilerPass());
     }
 }
