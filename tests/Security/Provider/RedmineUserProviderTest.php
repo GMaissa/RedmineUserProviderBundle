@@ -13,7 +13,7 @@ namespace GMaissa\RedmineUserProviderBundle\Tests\Security\Provider;
 
 use GMaissa\RedmineUserProviderBundle\Model\RedmineUser;
 use GMaissa\RedmineUserProviderBundle\Security\Provider\RedmineUserProvider;
-use GMaissa\RedmineUserProviderBundle\Tests\Mock\ApiClient\RedmineApiClientMock;
+use GMaissa\RedmineUserProviderBundle\Tester\Mock\ApiClient\RedmineApiClientMock;
 use PHPUnit\Framework\TestCase;
 
 class RedmineUserProviderTest extends TestCase
