@@ -1,0 +1,48 @@
+language: php
+
+php:
+  - '7.0'
+  - '7.1'
+  - nightly
+
+env:
+  global:
+    - COVERAGE=false
+    - PHPUNIT_ARGS=''
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+  include:
+    - php: '7.1'
+      env:
+        - COVERAGE=true
+        - PHPUNIT_ARGS="--coverage-text --coverage-clover=build/coverage.xml"
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - vendor
+
+before_install:
+  - composer self-update
+
+install:
+  - travis_retry composer install --no-interaction
+
+before_script:
+  - |
+    if [ "${COVERAGE}" == 'true' ]; then
+      mkdir -p build
+      wget https://scrutinizer-ci.com/ocular.phar
+    fi
+
+script:
+  - php vendor/bin/phpunit ${PHPUNIT_ARGS}
+
+after_script:
+  - |
+    if [ "${COVERAGE}" == 'true' ]; then
+      travis_retry php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml
+    fi
