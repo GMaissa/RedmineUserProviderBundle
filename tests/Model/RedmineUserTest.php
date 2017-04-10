@@ -42,7 +42,7 @@ class RedmineUserTest extends TestCase
                     'username' => 'test',
                     'password' => 'password',
                     'salt' => 'test',
-                    'roles' => new ArrayCollection([RedmineUser::ROLE_DEFAULT])
+                    'roles' => [RedmineUser::ROLE_DEFAULT]
                 ],
                 [
                     'getUsername' => 'test',
