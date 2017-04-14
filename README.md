@@ -89,6 +89,24 @@ services:
             -  {name: gm_redmine_user_provider.user_repository}
 ```
 
+## Using with FOSOAuthServerBundle
+
+Enable the OAuth Server Bridge :
+
+```yaml
+gm_redmine_user_provider:
+    ...
+    oauthserver_bridge: true
+```
+
+You can now use the OAuth Storage service `gm_redmine_user_provider.bridge.oauth.storage` :
+
+```yaml
+fos_oauth_server:
+    ...
+    service:
+        storage: gm_redmine_user_provider.bridge.oauth.storage
+```
 
 ## Implementing your own User Factory
 

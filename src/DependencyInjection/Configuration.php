@@ -40,6 +40,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('user_class')->defaultValue($defaultUserClass)->cannotBeEmpty()->end()
                 ->enumNode('persistence_driver')->values(array('orm'))->end()
+                ->booleanNode('oauthserver_bridge')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;

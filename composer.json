@@ -25,7 +25,11 @@
         "squizlabs/php_codesniffer": "^2.8",
         "phpmd/phpmd": "^2.6",
         "sebastian/phpcpd": "^3.0",
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "friendsofsymfony/oauth-server-bundle": "^1.5"
+    },
+    "suggest": {
+        "friendsofsymfony/oauth-server-bundle": "Manage OAuth2 authentication for API"
     },
     "autoload":{
         "psr-4":{

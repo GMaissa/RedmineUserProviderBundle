@@ -83,5 +83,10 @@ class GmRedmineUserProviderExtension extends Extension
         if (isset($config['persistence_driver']) && !is_null($config['persistence_driver'])) {
             $loader->load(sprintf('%s.yml', $config['persistence_driver']));
         }
+
+        // services for FOS OAuth Server bundle
+        if (isset($config['oauthserver_bridge']) && $config['oauthserver_bridge']) {
+            $loader->load('oauthserver.yml');
+        }
     }
 }
