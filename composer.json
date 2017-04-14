@@ -4,7 +4,7 @@
     "description": "A bundle to use Redmine as a user provider for Symfony projects.",
     "keywords": ["security", "user provider", "redmine"],
     "homepage": "https://github.com/GMaissa/RedmineUserProviderBundle",
-    "license": "OSL-3.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Guillaume Maïssa",

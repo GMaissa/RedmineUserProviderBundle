@@ -175,3 +175,11 @@ and install the repository pre-commit hook :
 Finally, in order to homogenize commit messages across contributors (and to ease generation of the CHANGELOG),
 please apply this [git commit message hook](https://gist.github.com/GMaissa/f008b2ffca417c09c7b8)
 onto your local repository. 
+
+## License
+
+This bundle is released under the MIT license. See the complete license in the bundle:
+
+```bash
+src/Resources/meta/LICENSE
+```
