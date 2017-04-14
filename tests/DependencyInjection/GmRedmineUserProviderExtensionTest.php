@@ -93,6 +93,19 @@ class GmRedmineUserProviderExtensionTest extends TestCase
                     ],
                     'services' => []
                 ]
+            ],
+            [
+                'with_oauth_bridge.yml',
+                [
+                    'parameters' => [
+                        'gm_redmine_user_provider.redmine.url' => 'redmine.test.com',
+                        'gm_redmine_user_provider.redmine.allowed_domains' => ['test.com'],
+                        'gm_redmine_user_provider.user_class' => 'GMaissa\RedmineUserProviderBundle\Model\RedmineUser',
+                    ],
+                    'services' => [
+                        'gm_redmine_user_provider.bridge.oauth.storage'
+                    ]
+                ]
             ]
         ];
     }

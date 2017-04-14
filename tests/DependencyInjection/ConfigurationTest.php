@@ -52,7 +52,8 @@ class ConfigurationTest extends TestCase
                         'url' => 'redmine.test.com',
                         'allowed_domains' => ['test.com']
                     ],
-                    'user_class' => 'GMaissa\RedmineUserProviderBundle\Model\RedmineUser'
+                    'user_class' => 'GMaissa\RedmineUserProviderBundle\Model\RedmineUser',
+                    'oauthserver_bridge' => false
                 ]
             ],
             [
@@ -63,7 +64,8 @@ class ConfigurationTest extends TestCase
                         'allowed_domains' => ['test.com']
                     ],
                     'user_class' => 'GMaissa\RedmineUserProviderBundle\Model\RedmineUser',
-                    'persistence_driver' => 'orm'
+                    'persistence_driver' => 'orm',
+                    'oauthserver_bridge' => false
                 ]
             ],
             [
@@ -74,6 +76,7 @@ class ConfigurationTest extends TestCase
                         'allowed_domains' => ['test.com']
                     ],
                     'user_class' => 'GMaissa\RedmineUserProviderBundle\Tests\Mock\Entity\ValidUserEntity',
+                    'oauthserver_bridge' => false
                 ]
             ]
         ];
