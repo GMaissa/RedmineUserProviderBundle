@@ -1,5 +1,5 @@
 parameters:
-    gm_redmine_user_provider.bridge.oauth.storage.class: VmDashboard\Infrastructure\OAuthBundle\Security\Storage\OAuthStorage
+    gm_redmine_user_provider.bridge.oauth.storage.class: GMaissa\RedmineUserProviderBundle\Bridge\OAuthServer\Security\Storage\OAuthStorage
 
 services:
     gm_redmine_user_provider.bridge.oauth.storage:
@@ -9,5 +9,5 @@ services:
             - "@fos_oauth_server.access_token_manager"
             - "@fos_oauth_server.refresh_token_manager"
             - "@fos_oauth_server.auth_code_manager"
-            - "@fos_oauth_server.user_provider"
+            - "@gm_redmine_user_provider.provider"
             - "@security.encoder_factory"

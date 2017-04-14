@@ -48,15 +48,16 @@ gm_redmine_user_provider:
     redmine:
         url:                  ~ # Required
         allowed_domains:      []
-    user_class:           \GMaissa\RedmineUserProviderBundle\Model\RedmineUser
-    user_repository_service: ~
+    user_class:           GMaissa\RedmineUserProviderBundle\Model\RedmineUser
+    persistence_driver:   ~ # One of "orm"
+    oauthserver_bridge:   false
 ```
 
 ## Persist your User
 
 ### User entity class
 
-Implement your own User Entity class, extending `GMaissa\RedmineUserProviderBundle\Model\User` and declare it in the bundle
+Implement your own User Entity class, extending `GMaissa\RedmineUserProviderBundle\Entity\User` and declare it in the bundle
 configuration :
 
 ```yaml
