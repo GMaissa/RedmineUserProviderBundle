@@ -24,11 +24,6 @@ class RedmineApiClientMock implements RedmineApiClientInterface
      */
     private $connectedUser = false;
 
-    /**
-     * @var array
-     */
-    private $url;
-
     private $usersData = [
         'test' => [
             'user' => [
@@ -52,14 +47,13 @@ class RedmineApiClientMock implements RedmineApiClientInterface
         ]
     ];
 
-    private $apiName;
-
     /**
      * {@inheritdoc}
      */
     public function __construct(string $url)
     {
-        $this->url = $url;
+        // No need to store the parameter which will not be used
+        unset($url);
     }
 
     /**
