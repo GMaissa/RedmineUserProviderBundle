@@ -63,7 +63,7 @@ class ConfigurationTest extends TestCase
                         'allowed_domains' => ['test.com']
                     ],
                     'user_class' => '\GMaissa\RedmineUserProviderBundle\Model\RedmineUser',
-                    'user_repository_service' => 'redmine_user_provider.repository.user.db'
+                    'user_repository_service' => 'gm_redmine_user_provider.repository.user.orm'
                 ]
             ]
         ];

@@ -29,12 +29,12 @@ class UserProviderCompilerPass implements CompilerPassInterface
     {
         $defaultDependencies = [
             [
-                'serviceId'        => 'redmine_user_provider.api.client',
-                'defaultServiceId' => 'redmine_user_provider.api.client.default'
+                'serviceId'        => 'gm_redmine_user_provider.api.client',
+                'defaultServiceId' => 'gm_redmine_user_provider.api.client.default'
             ],
             [
-                'serviceId'        => 'redmine_user_provider.factory.user',
-                'defaultServiceId' => 'redmine_user_provider.factory.user.default'
+                'serviceId'        => 'gm_redmine_user_provider.factory.user',
+                'defaultServiceId' => 'gm_redmine_user_provider.factory.user.default'
             ]
         ];
         foreach ($defaultDependencies as $dependency) {
@@ -59,7 +59,7 @@ class UserProviderCompilerPass implements CompilerPassInterface
                 );
             }
 
-            $definition = $container->getDefinition('redmine_user_provider.provider');
+            $definition = $container->getDefinition('gm_redmine_user_provider.provider');
             $definition->addMethodCall('setUserRepository', array(new Reference($serviceId)));
             $container->getParameterBag()->remove('gm_redmine_user_provider.user_repository_service');
         }
