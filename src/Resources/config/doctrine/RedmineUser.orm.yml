@@ -1,6 +1,5 @@
-GMaissa\RedmineUserProviderBundle\Model\RedmineUser:
+GMaissa\RedmineUserProviderBundle\Entity\RedmineUser:
     type: mappedSuperclass
-    repositoryClass: GMaissa\RedmineUserProviderBundle\Repository\Doctrine\Orm\UserRepository
     fields:
         username:
             column: username
