@@ -37,7 +37,7 @@ security:
     ...
     providers:
         app:
-            id: redmine_user_provider.provider
+            id: gm_redmine_user_provider.provider
     ...
 ```
 
@@ -56,12 +56,12 @@ gm_redmine_user_provider:
 
 If you want to store the redmine user data locally, either :
 * implements the `GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface` interface for your repository service
-* use the provided Doctrine repository `redmine_user_provider.repository.user.db`
+* use the provided Doctrine repository `gm_redmine_user_provider.repository.user.orm`
 
 ```yaml
 gm_redmine_user_provider:
     ...
-    user_repository_service: redmine_user_provider.repository.user.db
+    user_repository_service: gm_redmine_user_provider.repository.user.orm
 ```
 
 
@@ -69,7 +69,7 @@ gm_redmine_user_provider:
 ## Implementing your own User Factory
 
 If you want to use a custom User Factory, implement the `GMaissa\RedmineUserProviderBundle\Factory\UserFactoryInterface`
-interface, register your service and alias it as `redmine_user_provider.factory.user`.
+interface, register your service and alias it as `gm_redmine_user_provider.factory.user`.
 
 ```yaml
 services:
@@ -77,13 +77,13 @@ services:
         class: AppBundle\Factory\CustomUserFactory
         calls:
             - [setUserClass, ["%gm_redmine_user_provider.user_class%"]]
-        alias: redmine_user_provider.factory.user
+        alias: gm_redmine_user_provider.factory.user
 ```
 
 ## Using your own Redmine Api Client
 
 Like the custom User Factory, implement the `GMaissa\RedmineUserProviderBundle\ApiClient\RedmineApiClientInterface`
-interface, register your service and alias it as `redmine_user_provider.api.client`.
+interface, register your service and alias it as `gm_redmine_user_provider.api.client`.
 
 ```yaml
 services:
@@ -91,7 +91,7 @@ services:
         class: AppBundle\ApiClient\CustomApiClient
         arguments:
             - "%gm_redmine_user_provider.redmine.url%"
-        alias: redmine_user_provider.api.client
+        alias: gm_redmine_user_provider.api.client
 ```
 
 ## Contributing

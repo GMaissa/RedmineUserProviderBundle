@@ -39,17 +39,17 @@ class UserProviderCompilerPassTest extends TestCase
         $compiler = new UserProviderCompilerPass();
         $compiler->process($container);
 
-        $apiClient = $container->get('redmine_user_provider.api.client');
+        $apiClient = $container->get('gm_redmine_user_provider.api.client');
         $this->assertTrue(
             $apiClient instanceof $expectedResults['apiClient']
         );
 
-        $factory = $container->get('redmine_user_provider.factory.user');
+        $factory = $container->get('gm_redmine_user_provider.factory.user');
         $this->assertTrue(
             $factory instanceof $expectedResults['factory']
         );
 
-        $providerDefinition  = $container->getDefinition('redmine_user_provider.provider');
+        $providerDefinition  = $container->getDefinition('gm_redmine_user_provider.provider');
         $providerMethodCalls = $providerDefinition->getMethodCalls();
         if (isset($expectedResults['userRepository'])) {
             $this->assertEquals(3, count($providerMethodCalls));
@@ -76,7 +76,7 @@ class UserProviderCompilerPassTest extends TestCase
                 [
                     'apiClient'      => '\GMaissa\RedmineUserProviderBundle\ApiClient\Adapter\RedmineClientAdapter',
                     'factory'        => '\GMaissa\RedmineUserProviderBundle\Factory\UserFactory',
-                    'userRepository' => 'redmine_user_provider.repository.user.db'
+                    'userRepository' => 'gm_redmine_user_provider.repository.user.orm'
                 ]
             ],
             [
@@ -85,7 +85,7 @@ class UserProviderCompilerPassTest extends TestCase
                 [
                     'apiClient'      => '\GMaissa\RedmineUserProviderBundle\ApiClient\Adapter\RedmineClientAdapter',
                     'factory'        => '\GMaissa\RedmineUserProviderBundle\Factory\UserFactory',
-                    'userRepository' => 'redmine_user_provider.repository.user.db'
+                    'userRepository' => 'gm_redmine_user_provider.repository.user.orm'
                 ]
             ]
         ];
