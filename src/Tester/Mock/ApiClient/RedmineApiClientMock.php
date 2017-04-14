@@ -15,6 +15,7 @@ use GMaissa\RedmineUserProviderBundle\ApiClient\RedmineApiClientInterface;
 
 /**
  * Mock class for User provider testing
+ * @codeCoverageIgnore
  */
 class RedmineApiClientMock implements RedmineApiClientInterface
 {

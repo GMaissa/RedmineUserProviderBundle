@@ -1,0 +1,12 @@
+parameters:
+    gm_redmine_user_provider.repository.user.orm.class: GMaissa\RedmineUserProviderBundle\Repository\Doctrine\Orm\UserRepository
+
+services:
+    gm_redmine_user_provider.repository.user.orm:
+        class: "%gm_redmine_user_provider.repository.user.orm.class%"
+        public: false
+        factory: ["@doctrine.orm.entity_manager", "getRepository"]
+        arguments:
+            - "%gm_redmine_user_provider.user_class%"
+        tags:
+            -  {name: gm_redmine_user_provider.user_repository}

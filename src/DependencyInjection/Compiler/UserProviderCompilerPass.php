@@ -43,9 +43,21 @@ class UserProviderCompilerPass implements CompilerPassInterface
             }
         }
 
-        if ($container->hasParameter('gm_redmine_user_provider.user_repository_service')) {
-            $serviceId            = $container->getParameter('gm_redmine_user_provider.user_repository_service');
-            $repositoryDefinition = $container->getDefinition($serviceId);
+        $repositories = [];
+        foreach (array_keys($container->findTaggedServiceIds('gm_redmine_user_provider.user_repository')) as $id) {
+            $repositories[] = $id;
+        }
+        if (count($repositories) > 1) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'You cannot have multiple services tagged as "%s"',
+                    'gm_redmine_user_provider.user_repository'
+                )
+            );
+        }
+        if (count($repositories) == 1) {
+            $repositoryId         = $repositories[0];
+            $repositoryDefinition = $container->getDefinition($repositoryId);
             $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
             $reflection           = new \ReflectionClass($className);
             $repositoryInterface  = 'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface';
@@ -53,15 +65,14 @@ class UserProviderCompilerPass implements CompilerPassInterface
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The user repository %s should implement interface "%s"',
-                        $serviceId,
+                        $repositoryId,
                         'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
                     )
                 );
             }
 
             $definition = $container->getDefinition('gm_redmine_user_provider.provider');
-            $definition->addMethodCall('setUserRepository', array(new Reference($serviceId)));
-            $container->getParameterBag()->remove('gm_redmine_user_provider.user_repository_service');
+            $definition->addMethodCall('setUserRepository', array(new Reference($repositoryId)));
         }
     }
 }

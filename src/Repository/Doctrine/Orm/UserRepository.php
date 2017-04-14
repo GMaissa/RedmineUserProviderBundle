@@ -9,25 +9,17 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace GMaissa\RedmineUserProviderBundle\Repository;
+namespace GMaissa\RedmineUserProviderBundle\Repository\Doctrine\Orm;
 
 use Doctrine\ORM\EntityRepository;
+use GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * User Repository Class
+ * Doctrine ORM User Repository Class
  */
-class DoctrineUserRepository extends EntityRepository implements UserRepositoryInterface
+class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function delete(UserInterface $user)
-    {
-        $this->_em->remove($user);
-        $this->_em->flush();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -35,10 +27,5 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
     {
         $this->_em->persist($user);
         $this->_em->flush();
-    }
-
-    public function getClass(): string
-    {
-        return $this->_entityName;
     }
 }

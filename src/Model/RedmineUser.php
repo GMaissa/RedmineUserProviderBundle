@@ -11,16 +11,14 @@
 
 namespace GMaissa\RedmineUserProviderBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class User
+ * User Model Class
  */
 class RedmineUser implements UserInterface
 {
     const ROLE_DEFAULT     = 'ROLE_USER';
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     /**
      * @var integer

@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $defaultUserClass = "\\GMaissa\\RedmineUserProviderBundle\\Model\\RedmineUser";
+        $defaultUserClass = 'GMaissa\RedmineUserProviderBundle\Model\RedmineUser';
         $treeBuilder      = new TreeBuilder();
         $rootNode         = $treeBuilder->root('gm_redmine_user_provider');
 
@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->scalarNode('user_class')->defaultValue($defaultUserClass)->cannotBeEmpty()->end()
-                ->scalarNode('user_repository_service')->end()
+                ->enumNode('persistence_driver')->values(array('orm'))->end()
             ->end();
 
         return $treeBuilder;

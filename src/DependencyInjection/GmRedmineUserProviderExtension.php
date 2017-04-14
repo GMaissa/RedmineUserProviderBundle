@@ -13,17 +13,14 @@ namespace GMaissa\RedmineUserProviderBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Infrastructure UserBundle Dependency Injection Class
  */
-class GmRedmineUserProviderExtension extends Extension implements PrependExtensionInterface
+class GmRedmineUserProviderExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -33,31 +30,36 @@ class GmRedmineUserProviderExtension extends Extension implements PrependExtensi
         $processor     = new Processor();
         $configuration = new Configuration();
         $config        = $processor->processConfiguration($configuration, $configs);
+
         $container->setParameter('gm_redmine_user_provider.redmine.url', $config['redmine']['url']);
         $container->setParameter(
             'gm_redmine_user_provider.redmine.allowed_domains',
             $config['redmine']['allowed_domains']
         );
-        $container->setParameter('gm_redmine_user_provider.user_class', $config['user_class']);
-        if (isset($config['user_repository_service'])) {
-            $container->setParameter(
-                'gm_redmine_user_provider.user_repository_service',
-                $config['user_repository_service']
-            );
+        if (isset($config['user_class'])) {
+            $reflection    = new \ReflectionClass($config['user_class']);
+            $userInterface = '\Symfony\Component\Security\Core\User\UserInterface';
+            if (!$reflection->implementsInterface($userInterface)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The user class %s should implement interface "%s"',
+                        $config['user_class'],
+                        $userInterface
+                    )
+                );
+            }
+
+            $container->setParameter('gm_redmine_user_provider.user_class', $config['user_class']);
         }
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $persistenceConfigFile = __DIR__ . '/../Resources/config/persistence.yml';
-        $config                = Yaml::parse(file_get_contents($persistenceConfigFile));
-        $container->prependExtensionConfig('doctrine', $config);
-        $container->addResource(new FileResource($persistenceConfigFile));
+        // Load default services
+        $loader->load('services.yml');
+
+        // Load persistence services
+        if (isset($config['persistence_driver']) && !is_null($config['persistence_driver'])) {
+            $loader->load(sprintf('%s.yml', $config['persistence_driver']));
+        }
     }
 }
