@@ -43,6 +43,16 @@ class UserProviderCompilerPass implements CompilerPassInterface
             }
         }
 
+        $this->processRepository($container);
+    }
+
+    /**
+     * Look for configured user repository, to inject it into user provider service
+     *
+     * @param ContainerBuilder $container
+     */
+    private function processRepository(ContainerBuilder $container): void
+    {
         $repositories = [];
         foreach (array_keys($container->findTaggedServiceIds('gm_redmine_user_provider.user_repository')) as $id) {
             $repositories[] = $id;
@@ -56,23 +66,34 @@ class UserProviderCompilerPass implements CompilerPassInterface
             );
         }
         if (count($repositories) == 1) {
-            $repositoryId         = $repositories[0];
-            $repositoryDefinition = $container->getDefinition($repositoryId);
-            $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
-            $reflection           = new \ReflectionClass($className);
-            $repositoryInterface  = 'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface';
-            if (!$reflection->implementsInterface($repositoryInterface)) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'The user repository %s should implement interface "%s"',
-                        $repositoryId,
-                        'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
-                    )
-                );
-            }
+            $repositoryId = $repositories[0];
+            $this->checkRepositoryValidity($container, $repositoryId);
 
             $definition = $container->getDefinition('gm_redmine_user_provider.provider');
             $definition->addMethodCall('setUserRepository', array(new Reference($repositoryId)));
+        }
+    }
+
+    /**
+     * Control if tagged repository is valid
+     *
+     * @param ContainerBuilder $container
+     * @param string           $repositoryId
+     */
+    private function checkRepositoryValidity(ContainerBuilder $container, string $repositoryId): void
+    {
+        $repositoryDefinition = $container->getDefinition($repositoryId);
+        $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
+        $reflection           = new \ReflectionClass($className);
+        $repositoryInterface  = 'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface';
+        if (!$reflection->implementsInterface($repositoryInterface)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The user repository %s should implement interface "%s"',
+                    $repositoryId,
+                    'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
+                )
+            );
         }
     }
 }

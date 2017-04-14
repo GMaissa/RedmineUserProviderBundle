@@ -31,6 +31,19 @@ class GmRedmineUserProviderExtension extends Extension
         $configuration = new Configuration();
         $config        = $processor->processConfiguration($configuration, $configs);
 
+        $this->registerParameters($container, $config);
+
+        $this->loadServices($container, $config);
+    }
+
+    /**
+     * Set parameters from bundle configuration
+     *
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    private function registerParameters(ContainerBuilder $container, array $config): void
+    {
         $container->setParameter('gm_redmine_user_provider.redmine.url', $config['redmine']['url']);
         $container->setParameter(
             'gm_redmine_user_provider.redmine.allowed_domains',
@@ -51,7 +64,16 @@ class GmRedmineUserProviderExtension extends Extension
 
             $container->setParameter('gm_redmine_user_provider.user_class', $config['user_class']);
         }
+    }
 
+    /**
+     * Load default and persistence services
+     *
+     * @param ContainerBuilder $container
+     * @param                  $config
+     */
+    private function loadServices(ContainerBuilder $container, $config): void
+    {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         // Load default services
