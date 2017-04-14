@@ -51,7 +51,7 @@ class UserProviderCompilerPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    private function processRepository(ContainerBuilder $container): void
+    private function processRepository(ContainerBuilder $container)
     {
         $repositories = [];
         foreach (array_keys($container->findTaggedServiceIds('gm_redmine_user_provider.user_repository')) as $id) {
@@ -80,7 +80,7 @@ class UserProviderCompilerPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @param string           $repositoryId
      */
-    private function checkRepositoryValidity(ContainerBuilder $container, string $repositoryId): void
+    private function checkRepositoryValidity(ContainerBuilder $container, string $repositoryId)
     {
         $repositoryDefinition = $container->getDefinition($repositoryId);
         $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
