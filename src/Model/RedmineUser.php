@@ -72,6 +72,7 @@ class RedmineUser implements UserInterface
      */
     public function __construct($properties = array())
     {
+        $this->roles = [];
         foreach ($properties as $key => $value) {
             $this->$key = $value;
         }
