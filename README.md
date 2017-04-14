@@ -1,7 +1,7 @@
 # RedmineUserProviderBundle
 
- master | [![SensioLabsInsight](https://insight.sensiolabs.com/projects/443c6ca0-a4ba-4add-a1e6-41dd63a1f14e/mini.png)](https://insight.sensiolabs.com/projects/443c6ca0-a4ba-4add-a1e6-41dd63a1f14e) | [![Scrutinizer](https://img.shields.io/scrutinizer/g/GMaissa/RedmineUserProviderBundle/master.svg)](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/?branch=master) | [![Build Status](https://travis-ci.org/GMaissa/RedmineUserProviderBundle.svg?branch=master)](https://travis-ci.org/GMaissa/RedmineUserProviderBundle) | [![Code Coverage](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/?branch=master)
---------|---------|-------------|--------|----------
+ master | [![SensioLabsInsight](https://insight.sensiolabs.com/projects/443c6ca0-a4ba-4add-a1e6-41dd63a1f14e/mini.png)](https://insight.sensiolabs.com/projects/443c6ca0-a4ba-4add-a1e6-41dd63a1f14e) | [![Scrutinizer](https://img.shields.io/scrutinizer/g/GMaissa/RedmineUserProviderBundle/master.svg)](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/?branch=master) | [![Build Status](https://travis-ci.org/GMaissa/RedmineUserProviderBundle.svg?branch=master)](https://travis-ci.org/GMaissa/RedmineUserProviderBundle) | [![Code Coverage](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GMaissa/RedmineUserProviderBundle/?branch=master) | [![Packagist](https://img.shields.io/packagist/l/gmaissa/redmine-user-provider-bundle.svg)](https://packagist.org/packages/gmaissa/redmine-user-provider-bundle)
+--------|---------|-------------|--------|----------|-----------
 
 ## About
 
@@ -33,6 +33,7 @@ public function registerBundles()
 Use the Redmine user provider in your security.yml file :
 
 ```yaml
+# app/config/security.yml
 security:
     ...
     providers:
@@ -44,6 +45,7 @@ security:
 ## Configuration reference
 
 ```yaml
+# app/config/config.yml
 gm_redmine_user_provider:
     redmine:
         url:                  ~ # Required
@@ -61,6 +63,7 @@ Implement your own User Entity class, extending `GMaissa\RedmineUserProviderBund
 configuration :
 
 ```yaml
+# app/config/config.yml
 gm_redmine_user_provider:
     ...
     user_class: AppBundle\Entity\User
@@ -71,6 +74,7 @@ gm_redmine_user_provider:
 Enable the provided persistence driver you want to use (for now only Doctrine ORM is provided) :
 
 ```yaml
+# app/config/config.yml
 gm_redmine_user_provider:
     ...
     user_class: AppBundle\Entity\User
@@ -83,6 +87,7 @@ Implements the `GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInter
 service`and tag is as a `gm_redmine_user_provider.user_repository :
 
 ```yaml
+# services.yml
 services:
     app.user_repository:
         class: AppBundle\Repository\UserReposioty
@@ -95,6 +100,7 @@ services:
 Enable the OAuth Server Bridge :
 
 ```yaml
+# app/config/config.yml
 gm_redmine_user_provider:
     ...
     oauthserver_bridge: true
@@ -103,6 +109,7 @@ gm_redmine_user_provider:
 You can now use the OAuth Storage service `gm_redmine_user_provider.bridge.oauth.storage` :
 
 ```yaml
+# app/config/config.yml
 fos_oauth_server:
     ...
     service:
@@ -115,6 +122,7 @@ If you want to use a custom User Factory, implement the `GMaissa\RedmineUserProv
 interface, register your service and alias it as `gm_redmine_user_provider.factory.user`.
 
 ```yaml
+# services.yml
 services:
     app.redmine_user_provider.user_factory:
         class: AppBundle\Factory\CustomUserFactory
@@ -129,12 +137,25 @@ Like the custom User Factory, implement the `GMaissa\RedmineUserProviderBundle\A
 interface, register your service and alias it as `gm_redmine_user_provider.api.client`.
 
 ```yaml
+# services.yml
 services:
     app.redmine_user_factory.api_client:
         class: AppBundle\ApiClient\CustomApiClient
         arguments:
             - "%gm_redmine_user_provider.redmine.url%"
         alias: gm_redmine_user_provider.api.client
+```
+
+## Running tests
+
+Install the dev dependencies :
+
+composer install --dev
+
+Run PHPUnit test suite :
+
+```bash
+php vendor/bin/phpunit
 ```
 
 ## Contributing
