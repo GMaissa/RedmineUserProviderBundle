@@ -3,4 +3,4 @@ gm_redmine_user_provider:
         url: redmine.test.com
         allowed_domains:
             - test.com
-    persistence_driver: orm
+    user_class: GMaissa\RedmineUserProviderBundle\Tests\Mock\Entity\ValidUserEntity

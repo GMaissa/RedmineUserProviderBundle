@@ -80,7 +80,7 @@ class UserProviderCompilerPassTest extends TestCase
                 ]
             ],
             [
-                'with_valid_custom_repository.yml',
+                'minimal.yml',
                 'valid_services.yml',
                 [
                     'apiClient'      => '\GMaissa\RedmineUserProviderBundle\ApiClient\Adapter\RedmineClientAdapter',
@@ -125,8 +125,13 @@ class UserProviderCompilerPassTest extends TestCase
     {
         return [
             [
-                'with_unvalid_custom_repository.yml',
+                'minimal.yml',
                 'unvalid_services.yml',
+                '\InvalidArgumentException'
+            ],
+            [
+                'minimal.yml',
+                'multiple_repositories_services.yml',
                 '\InvalidArgumentException'
             ]
         ];

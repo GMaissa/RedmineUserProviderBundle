@@ -26,10 +26,3 @@ services:
         calls:
             - [setUserFactory, ["@gm_redmine_user_provider.factory.user"]]
             - [setApiClient, ["@gm_redmine_user_provider.api.client"]]
-
-    gm_redmine_user_provider.repository.user.orm:
-        class: "%gm_redmine_user_provider.repository.user.orm.class%"
-        public: false
-        factory: ["@doctrine.orm.entity_manager", "getRepository"]
-        arguments:
-            - "%gm_redmine_user_provider.user_class%"

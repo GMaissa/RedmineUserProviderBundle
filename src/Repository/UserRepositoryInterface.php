@@ -11,7 +11,6 @@
 
 namespace GMaissa\RedmineUserProviderBundle\Repository;
 
-use GMaissa\RedmineUserProviderBundle\Model\RedmineUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -25,16 +24,9 @@ interface UserRepositoryInterface
      * @param array      $criteria
      * @param array|null $orderBy
      *
-     * @return RedmineUser \ null
+     * @return UserInterface \ null
      */
     public function findOneBy(array $criteria, array $orderBy = null);
-
-    /**
-     * Delete a user
-     *
-     * @param UserInterface $user
-     */
-    public function delete(UserInterface $user);
 
     /**
      * Create a user

@@ -3,3 +3,8 @@ services:
         class: \GMaissa\RedmineUserProviderBundle\Tests\Mock\Repository\UnvalidCustomUserRepository
         tags:
             -  {name: gm_redmine_user_provider.user_repository}
+
+    gm_redmine_user_provider.repository.user.custom2:
+        class: \gmaissa\redmineuserproviderbundle\tests\mock\repository\validcustomuserrepository
+        tags:
+            -  {name: gm_redmine_user_provider.user_repository}

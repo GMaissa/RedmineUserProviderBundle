@@ -3,4 +3,4 @@ gm_redmine_user_provider:
         url: redmine.test.com
         allowed_domains:
             - test.com
-    user_repository_service: "redmine_user_provider.repository.user.custom"
+    user_class: GMaissa\RedmineUserProviderBundle\Tests\Mock\Entity\UnvalidUserEntity

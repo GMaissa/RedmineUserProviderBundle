@@ -1,12 +1,6 @@
 GMaissa\RedmineUserProviderBundle\Model\RedmineUser:
     type: mappedSuperclass
-    table: user
-    repositoryClass: GMaissa\RedmineUserProviderBundle\Repository\DoctrineUserRepository
-    id:
-        id:
-            type: integer
-            generator:
-                strategy: AUTO
+    repositoryClass: GMaissa\RedmineUserProviderBundle\Repository\Doctrine\Orm\UserRepository
     fields:
         username:
             column: username

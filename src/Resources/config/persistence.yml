@@ -1,7 +1,0 @@
-orm:
-    mappings:
-        GmRedmineUserProviderBundle:
-            type: yml
-            prefix: GMaissa\RedmineUserProviderBundle\Model
-            dir: 'Resources/config/persistence'
-#            is_bundle: false

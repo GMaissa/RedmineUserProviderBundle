@@ -36,7 +36,7 @@ class RedmineUserProviderTest extends TestCase
         $this->apiClient = new RedmineApiClientMock('http://redmine.test.com');
 
         $this->userRepository = $this->getMockBuilder('\GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface')
-            ->setMethods(['findOneBy', 'save', 'delete'])
+            ->setMethods(['findOneBy', 'save'])
             ->getMock();
 
         $this->logger = $this->createMock('\Psr\Log\LoggerInterface');

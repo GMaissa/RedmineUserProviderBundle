@@ -9,13 +9,13 @@ A bundle to use Redmine as a user provider.
 
 ## Installation
 
-The recommended way to install this bundle is through [Composer](http://getcomposer.org/). Just run:
+The recommended way to install this bundle is through [Composer](http://getcomposer.org/). Just run :
 
 ```bash
 composer require gmaissa/redmine-user-provider-bundle
 ```
 
-Register the bundle in the kernel of your application:
+Register the bundle in the kernel of your application :
 
 ```php
 // app/AppKernel.php
@@ -30,7 +30,7 @@ public function registerBundles()
 }
 ```
 
-Use the Redmine user provider in your security.yml file:
+Use the Redmine user provider in your security.yml file :
 
 ```yaml
 security:
@@ -52,18 +52,42 @@ gm_redmine_user_provider:
     user_repository_service: ~
 ```
 
-# Using a repository to store User data
+## Persist your User
 
-If you want to store the redmine user data locally, either :
-* implements the `GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface` interface for your repository service
-* use the provided Doctrine repository `gm_redmine_user_provider.repository.user.orm`
+### User entity class
+
+Implement your own User Entity class, extending `GMaissa\RedmineUserProviderBundle\Model\User` and declare it in the bundle
+configuration :
 
 ```yaml
 gm_redmine_user_provider:
     ...
-    user_repository_service: gm_redmine_user_provider.repository.user.orm
+    user_class: AppBundle\Entity\User
 ```
 
+### Using a provided user repository
+
+Enable the provided persistence driver you want to use (for now only Doctrine ORM is provided) :
+
+```yaml
+gm_redmine_user_provider:
+    ...
+    user_class: AppBundle\Entity\User
+    persistence_driver: orm
+```
+
+### Using a custom user repository
+
+Implements the `GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface` interface for your repository
+service`and tag is as a `gm_redmine_user_provider.user_repository :
+
+```yaml
+services:
+    app.user_repository:
+        class: AppBundle\Repository\UserReposioty
+        tags:
+            -  {name: gm_redmine_user_provider.user_repository}
+```
 
 
 ## Implementing your own User Factory

@@ -43,25 +43,57 @@ class UserProviderCompilerPass implements CompilerPassInterface
             }
         }
 
-        if ($container->hasParameter('gm_redmine_user_provider.user_repository_service')) {
-            $serviceId            = $container->getParameter('gm_redmine_user_provider.user_repository_service');
-            $repositoryDefinition = $container->getDefinition($serviceId);
-            $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
-            $reflection           = new \ReflectionClass($className);
-            $repositoryInterface  = 'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface';
-            if (!$reflection->implementsInterface($repositoryInterface)) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'The user repository %s should implement interface "%s"',
-                        $serviceId,
-                        'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
-                    )
-                );
-            }
+        $this->processRepository($container);
+    }
+
+    /**
+     * Look for configured user repository, to inject it into user provider service
+     *
+     * @param ContainerBuilder $container
+     */
+    private function processRepository(ContainerBuilder $container)
+    {
+        $repositories = [];
+        foreach (array_keys($container->findTaggedServiceIds('gm_redmine_user_provider.user_repository')) as $id) {
+            $repositories[] = $id;
+        }
+        if (count($repositories) > 1) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'You cannot have multiple services tagged as "%s"',
+                    'gm_redmine_user_provider.user_repository'
+                )
+            );
+        }
+        if (count($repositories) == 1) {
+            $repositoryId = $repositories[0];
+            $this->checkRepositoryValidity($container, $repositoryId);
 
             $definition = $container->getDefinition('gm_redmine_user_provider.provider');
-            $definition->addMethodCall('setUserRepository', array(new Reference($serviceId)));
-            $container->getParameterBag()->remove('gm_redmine_user_provider.user_repository_service');
+            $definition->addMethodCall('setUserRepository', array(new Reference($repositoryId)));
+        }
+    }
+
+    /**
+     * Control if tagged repository is valid
+     *
+     * @param ContainerBuilder $container
+     * @param string           $repositoryId
+     */
+    private function checkRepositoryValidity(ContainerBuilder $container, string $repositoryId)
+    {
+        $repositoryDefinition = $container->getDefinition($repositoryId);
+        $className            = $container->getParameterBag()->resolveValue($repositoryDefinition->getClass());
+        $reflection           = new \ReflectionClass($className);
+        $repositoryInterface  = 'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface';
+        if (!$reflection->implementsInterface($repositoryInterface)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The user repository %s should implement interface "%s"',
+                    $repositoryId,
+                    'GMaissa\RedmineUserProviderBundle\Repository\UserRepositoryInterface'
+                )
+            );
         }
     }
 }
